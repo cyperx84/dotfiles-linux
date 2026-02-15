@@ -123,6 +123,8 @@ Both use `Before=sleep.target` / `WantedBy=sleep.target` with `StopWhenUnneeded=
 - `appletbdrm` module loaded at boot via `/etc/modules-load.d/apple-bce.conf`
 - `tiny-dfr.service` starts automatically (BindsTo the display device)
 - On resume, `appletbdrm` is reloaded by `suspend-fix-t2.service` after `apple-bce`
+- Configured to show media buttons by default (brightness, volume, etc.) — F-keys accessible via Fn key
+  - Edit `/etc/tiny-dfr/config.toml` and set `MediaLayerDefault = true`
 
 ### Key files
 
