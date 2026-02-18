@@ -206,9 +206,17 @@ echo "=== Step 6: Configure suspend-then-hibernate ==="
 
 mkdir -p /etc/systemd/logind.conf.d /etc/systemd/sleep.conf.d
 cp "$OMARCHY_PATH/default/systemd/lid.conf" /etc/systemd/logind.conf.d/
-cp "$OMARCHY_PATH/default/systemd/hibernate.conf" /etc/systemd/sleep.conf.d/
+
+# Override omarchy default (30min) with shorter delay for T2 MacBook.
+# T2 suspend draws significant power due to apple-bce firmware, so hibernate
+# quickly to preserve battery.
+cat > /etc/systemd/sleep.conf.d/hibernate.conf <<'EOF'
+[Sleep]
+HibernateDelaySec=5min
+HibernateOnACPower=no
+EOF
 echo "logind: HandleLidSwitch=suspend-then-hibernate"
-echo "sleep: HibernateDelaySec=30min"
+echo "sleep: HibernateDelaySec=5min"
 
 echo ""
 echo "=== Step 7: Regenerate initramfs ==="

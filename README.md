@@ -10,7 +10,7 @@ Personal dotfiles for Arch Linux with [Omarchy](https://omarchy.org). Managed wi
 ## Quick Start
 
 ```bash
-git clone https://github.com/cyperx84/dotfiles-linux.git ~/dotfiles
+git clone git@github.com:cyperx84/dotfiles-linux.git ~/dotfiles
 cd ~/dotfiles
 ./bootstrap.sh
 ```
@@ -76,10 +76,12 @@ Files managed by omarchy's theme system (NOT in this repo):
 
 ## Extra Packages
 
-Install scripts in `scripts/` for packages not in standard repos:
+Install scripts in `scripts/`:
 - `install-ghostty.sh` — Ghostty terminal
 - `install-kanata.sh` — Kanata keyboard remapper
 - `install-zen-browser.sh` — Zen Browser
+- `setup-maintenance.sh` — Automated system maintenance (TRIM, mirrors, cache cleanup, journal limits)
+- `fix-suspend.sh` — T2 MacBook suspend/resume fix (see below)
 
 ## MacBook Pro T2 (15,3) — Suspend/Resume Fix
 
@@ -88,7 +90,7 @@ The T2 MacBook Pro needs special handling for suspend to work. Without it, `appl
 ### Deploy
 
 ```bash
-sudo bash ~/fix-suspend.sh
+sudo bash ~/dotfiles/scripts/fix-suspend.sh
 sudo reboot
 ```
 
@@ -116,7 +118,7 @@ Both use `Before=sleep.target` / `WantedBy=sleep.target` with `StopWhenUnneeded=
 - NVMe `d3cold_allowed=0` (prevents NVMe suspend failure)
 - `resume` mkinitcpio hook positioned after `encrypt`, before `filesystems`
 - Btrfs swapfile for hibernation with `resume=` and `resume_offset=` in cmdline
-- `HandleLidSwitch=suspend-then-hibernate` with 30min delay
+- `HandleLidSwitch=suspend-then-hibernate` with 5min delay (T2 drains battery fast in suspend)
 
 **4. Touch Bar (tiny-dfr + appletbdrm)**
 
@@ -130,7 +132,7 @@ Both use `Before=sleep.target` / `WantedBy=sleep.target` with `StopWhenUnneeded=
 
 | File | Purpose |
 |------|---------|
-| `~/fix-suspend.sh` | Master deploy script |
+| `~/dotfiles/scripts/fix-suspend.sh` | Master deploy script |
 | `/etc/systemd/system/suspend-fix-t2.service` | apple_bce unload/reload |
 | `/etc/systemd/system/suspend-fix-wifi.service` | brcmfmac unload/reload |
 | `/etc/limine-entry-tool.d/resume.conf` | Kernel cmdline drop-in for hibernation |
@@ -161,6 +163,45 @@ Both use `Before=sleep.target` / `WantedBy=sleep.target` with `StopWhenUnneeded=
 ```bash
 # T2-specific packages (install after base Omarchy setup)
 sudo pacman -S tiny-dfr t2fanrd apple-bcm-firmware apple-t2-audio-config bluez bluez-utils
+```
+
+## System Maintenance
+
+Automated maintenance is configured via systemd timers and pacman hooks:
+
+| Service | What it does | Schedule |
+|---------|-------------|----------|
+| `fstrim.timer` | TRIM SSD (NVMe health) | Weekly |
+| `reflector.timer` | Update pacman mirrors (fastest AU mirrors) | Weekly |
+| `clean_cache.hook` | `paccache -r` after every pacman transaction | On install/upgrade/remove |
+
+### Reflector config (`/etc/xdg/reflector/reflector.conf`)
+```
+--country Australia
+--protocol https
+--sort rate
+--latest 10
+--save /etc/pacman.d/mirrorlist
+```
+
+### Journal size limit (`/etc/systemd/journald.conf.d/size.conf`)
+```ini
+[Journal]
+SystemMaxUse=200M
+```
+
+### Makepkg parallelism (`/etc/makepkg.conf`)
+```
+MAKEFLAGS="-j$(nproc)"
+```
+Speeds up AUR builds by using all CPU cores.
+
+### Manual cleanup commands
+```bash
+paccache -r              # Keep only 3 most recent package versions
+paccache -rk1            # Keep only 1 version (more aggressive)
+journalctl --vacuum-size=200M  # Trim journal logs
+rm -rf ~/.cache/yay/*    # Clean AUR build cache
 ```
 
 ### Kernel cmdline reference
