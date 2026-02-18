@@ -11,7 +11,7 @@ import sys
 from pathlib import Path
 import re
 
-VAULT_PATH = Path.home() / "Library/Mobile Documents/iCloud~md~obsidian/Documents/notes"
+VAULT_PATH = Path.home() / "Documents/obsidian/notes"
 
 
 def extract_tags_from_content(content):

@@ -212,7 +212,7 @@ return {
   },
   opts = {
     -- Path to your Claude Code installation
-    terminal_cmd = '/opt/homebrew/bin/claude --dangerously-skip-permissions',
+    terminal_cmd = (vim.fn.exepath('claude') or 'claude') .. ' --dangerously-skip-permissions',
 
     -- Server options
     port_range = { min = 10000, max = 65535 },

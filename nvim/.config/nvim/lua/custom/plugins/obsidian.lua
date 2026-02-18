@@ -59,7 +59,7 @@ local function rename_note()
     local current_dir = vim.fn.fnamemodify(current_file, ':h')
     local new_path = current_dir .. '/' .. new_name .. '.md'
 
-    -- Allow case-only renames on macOS (filesystem is case-insensitive)
+    -- Allow case-only renames (handles case-insensitive filesystems)
     local is_case_only_rename = current_file:lower() == new_path:lower()
     if vim.fn.filereadable(new_path) == 1 and not is_case_only_rename then
       vim.notify('Error: File "' .. new_name .. '.md" already exists', vim.log.levels.ERROR)
@@ -190,9 +190,9 @@ return {
     require('obsidian').setup({
       -- Workspaces
       workspaces = {
-        { name = 'notes', path = vim.fn.expand('~/Library/Mobile Documents/iCloud~md~obsidian/Documents/notes') },
-        { name = 'snowboarding', path = vim.fn.expand('~/Library/Mobile Documents/iCloud~md~obsidian/Documents/snowboarding') },
-        { name = 'cyperx', path = vim.fn.expand('~/Library/Mobile Documents/iCloud~md~obsidian/Documents/cyperx') },
+        { name = 'notes', path = vim.fn.expand('~/Documents/obsidian/notes') },
+        { name = 'snowboarding', path = vim.fn.expand('~/Documents/obsidian/snowboarding') },
+        { name = 'cyperx', path = vim.fn.expand('~/Documents/obsidian/cyperx') },
       },
 
       -- Daily notes
@@ -231,7 +231,7 @@ return {
       -- Frontmatter
       frontmatter = {
         enabled = function(filename)
-          local documents_path = vim.fn.expand('~/Library/Mobile Documents/iCloud~md~obsidian/Documents')
+          local documents_path = vim.fn.expand('~/Documents/obsidian')
           local absolute_filename = vim.fn.fnamemodify(filename, ':p')
           return absolute_filename:match('^' .. vim.pesc(documents_path)) ~= nil
         end,

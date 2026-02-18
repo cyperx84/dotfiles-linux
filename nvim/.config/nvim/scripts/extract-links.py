@@ -12,7 +12,7 @@ import re
 from pathlib import Path
 from collections import defaultdict
 
-VAULT_PATH = Path.home() / "Library/Mobile Documents/iCloud~md~obsidian/Documents/notes"
+VAULT_PATH = Path.home() / "Documents/obsidian/notes"
 
 # Regex patterns for wiki-links
 WIKI_LINK_PATTERN = re.compile(r'\[\[([^\]|#]+)(?:[|#][^\]]*)?\]\]')

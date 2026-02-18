@@ -41,7 +41,7 @@ return {
         end
 
         -- Fallback: resolve relative to vault root
-        local vault_root = vim.fn.expand('~/Library/Mobile Documents/iCloud~md~obsidian/Documents/notes')
+        local vault_root = vim.fn.expand('~/Documents/obsidian/notes')
         local fallback_path = vault_root .. '/' .. src
         if vim.fn.filereadable(fallback_path) == 1 then
           return fallback_path
