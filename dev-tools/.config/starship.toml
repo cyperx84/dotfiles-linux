@@ -1,126 +1,180 @@
-# Gruvbox Dark Neon Theme
+# ============================================================================
+# STARSHIP PROMPT CONFIGURATION
+# ============================================================================
+# Author: cyperx (https://github.com/cyperx84)
+# Purpose: Cross-shell prompt with Gruvbox Dark Neon theme
+# ============================================================================
 
+"$schema" = 'https://starship.rs/config-schema.json'
 format = """
-[](fg:color_bg1)\
 $os\
-$username\
-[](bg:color_bg2 fg:color_bg1)\
 $directory\
-[](fg:color_bg2 bg:color_bg3)\
 $git_branch\
+$git_commit\
+$git_state\
 $git_status\
-[](fg:color_bg3 bg:color_bg4)\
-$nodejs\
+$c\
 $rust\
 $golang\
+$nodejs\
+$java\
+$kotlin\
 $python\
 $docker_context\
-$kubernetes\
-[](fg:color_bg4)\
-$line_break\
-$character"""
+$time\
+$character
+"""
 
-palette = "gruvbox_dark"
+palette = 'gruvbox_dark_neon'
 
-[palettes.gruvbox_dark]
-color_fg0 = "#fbf1c7"
-color_bg1 = "#3c3836"
-color_bg2 = "#504945"
-color_bg3 = "#665c54"
-color_bg4 = "#7c6f64"
-color_blue = "#458588"
-color_aqua = "#689d6a"
-color_green = "#98971a"
-color_orange = "#d65d0e"
-color_purple = "#b16286"
-color_red = "#cc241d"
-color_yellow = "#d79921"
+[palettes.gruvbox_dark_neon]
+color_fg0 = '#fbf1c7'
+color_bg1 = '#3c3836'
+color_bg3 = '#665c54'
+color_blue = '#0400FF'
+color_aqua = '#4cbb17'
+color_green = '#00FF00'
+color_orange = '#FF4501'
+color_purple = '#b16286'
+color_red = '#cc241d'
+color_yellow = '#FF7200'
 
 [os]
 disabled = false
-style = "bg:color_bg1 fg:color_fg0"
+style ="bold color_green"
 
 [os.symbols]
-Arch = "󰣇 "
-Debian = " "
-Ubuntu = " "
-Linux = " "
+Windows = "󰍲"
+Ubuntu = "󰕈"
+SUSE = ""
+Raspbian = "󰐿"
+Mint = "󰣭"
+Macos = "󰯈"
+Manjaro = ""
+Linux = "󰌽"
+Gentoo = "󰣨"
+Fedora = "󰣛"
+Alpine = ""
+Amazon = ""
+Android = ""
+# Arch = "󰣇"
+Arch = "󰯈"
+Artix = "󰣇"
+EndeavourOS = ""
+CentOS = ""
+Debian = "󰣚"
+Redhat = "󱄛"
+RedHatEnterprise = "󱄛"
+Pop = ""
 
 [username]
 show_always = true
-style_user = "bg:color_bg1 fg:color_fg0"
-style_root = "bg:color_bg1 fg:color_red"
-format = '[ $user ]($style)'
+style_user = "bg:color_orange fg:color_fg0"
+style_root = "bg:color_orange fg:color_fg0"
+format = '[$user]($style)'
 
 [directory]
-style = "fg:color_fg0 bg:color_bg2"
-format = "[ $path ]($style)"
 truncation_length = 3
-truncation_symbol = "…/"
+truncation_symbol = "󰇘"
+read_only = "◈"
+use_os_path_sep = false
+style = "bold color_orange"
+format = '[$path]($style)[$read_only]($read_only_style)'
+repo_root_style = 'bold italic blue'
+repo_root_format = '[$before_root_path]($before_repo_root_style)[$repo_root]($repo_root_style)[$path]($style)[$read_only]($read_only_style) [△](bold bright-blue)'
 
 [directory.substitutions]
-"Documents" = "󰈙 "
-"Downloads" = " "
-"Music" = "󰝚 "
-"Pictures" = " "
-"Code" = "󰲋 "
-"~" = " "
+"notes" = ""
+"Documents" = "󱔗"
+"Downloads" = ""
+"Music" = ""
+"Movies" = "󰷝"
+"Pictures" = ""
+"Code" = ""
+"agents" = "󱙝"
+"dotfiles" = "󰒔"
+".config" = ""
+"github" = ""
 
 [git_branch]
-symbol = ""
-style = "bg:color_bg3"
-format = '[[ $symbol $branch ](fg:color_fg0 bg:color_bg3)]($style)'
+format = " [$symbol(:$remote_branch)]($style)"
+symbol = "[󰊢](bold italic bright-green)"
+style = "italic bright-green"
+truncation_symbol = "⋯"
+truncation_length = 3
+only_attached = true
+
+[git_metrics]
+format = '([▴$added]($added_style))([▿$deleted]($deleted_style))'
+added_style = 'italic dimmed green'
+deleted_style = 'italic dimmed red'
+ignore_submodules = true
+disabled = true
 
 [git_status]
-style = "bg:color_bg3"
-format = '[[($all_status$ahead_behind )](fg:color_fg0 bg:color_bg3)]($style)'
-conflicted = " "
-ahead = "⇡${count} "
-behind = "⇣${count} "
-diverged = "⇕⇡${ahead_count}⇣${behind_count} "
-up_to_date = " "
-untracked = "? "
-modified = " "
-staged = " "
-renamed = " "
-deleted = " "
+# NOTE: Disabled for prompt performance (~50-100ms savings on large repos).
+# To enable: change 'disabled = true' to 'disabled = false'
+disabled = true
+style = "bold italic bright-blue"
+format = "([$ahead_behind$staged$modified$untracked$renamed$deleted$conflicted$stashed]($style))"
+conflicted = "[◪◦](italic bright-magenta)"
+ahead = "[[${count}](bold white)](italic green)"
+behind = "[▿│[${count}](bold white)│](italic red)"
+diverged = "[◇ ▴┤[${ahead_count}](regular white)│▿┤[${behind_count}](regular white)│](italic bright-magenta)"
+untracked = "[](italic green)"
+stashed = "[◃◈](italic white)"
+modified = "[](italic bright-yellow)"
+staged = "[[$count](bold blue) ](italic bright-cyan)"
+renamed = "[◎◦](italic bright-blue)"
+deleted = "[✕](italic red)"
 
-[nodejs]
-symbol = ""
-style = "bg:color_bg4"
-format = '[[ $symbol( $version) ](fg:color_fg0 bg:color_bg4)]($style)'
+# ============================================================================
+# LANGUAGE MODULES (only those in format string)
+# ============================================================================
+
+[c]
+format = 'via [$symbol]($style)'
 
 [rust]
-symbol = ""
-style = "bg:color_bg4"
-format = '[[ $symbol( $version) ](fg:color_fg0 bg:color_bg4)]($style)'
+format = 'via [$symbol]($style)'
 
 [golang]
-symbol = ""
-style = "bg:color_bg4"
-format = '[[ $symbol( $version) ](fg:color_fg0 bg:color_bg4)]($style)'
+format = 'via [$symbol]($style)'
+
+[nodejs]
+format = 'via [$symbol]($style)'
+
+[java]
+format = 'via [$symbol]($style)'
+
+[kotlin]
+format = 'via [$symbol]($style)'
 
 [python]
-symbol = ""
-style = "bg:color_bg4"
-format = '[[ $symbol( $version) ](fg:color_fg0 bg:color_bg4)]($style)'
+format = 'via [$symbol]($style)'
 
 [docker_context]
-symbol = ""
-style = "bg:color_bg4"
-format = '[[ $symbol( $context) ](fg:color_fg0 bg:color_bg4)]($style)'
+format = 'via [$symbol]($style)'
 
-[kubernetes]
-symbol = "󱃾"
-style = "bg:color_bg4"
-format = '[[ $symbol( $context) ](fg:color_fg0 bg:color_bg4)]($style)'
-disabled = false
+
+# ============================================================================
+# UI ELEMENTS
+# ============================================================================
+
+[time]
+disabled = true
+time_format = "%R"
+style = "bg:color_bg1"
+format = '[[ $time ](fg:color_fg0 bg:color_bg1)]($style)'
 
 [line_break]
 disabled = false
 
 [character]
 disabled = false
-success_symbol = '[❯](bold color_green)'
-error_symbol = '[❯](bold color_red)'
-vimcmd_symbol = '[❮](bold color_green)'
+success_symbol = '[=>](color_orange)'
+error_symbol = '[/=](fg:color_red)'
+vimcmd_symbol = '[](bold fg:color_green)'
+vimcmd_replace_one_symbol = '[](bold fg:color_purple)'
+vimcmd_replace_symbol = '[](bold fg:color_purple)'
+vimcmd_visual_symbol = '[](bold fg:color_yellow)'

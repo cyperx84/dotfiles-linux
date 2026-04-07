@@ -40,7 +40,7 @@ return {
       require('mini.ai').setup { n_lines = 500 }
       require('mini.surround').setup()
       require('mini.sessions').setup {
-        autoread = false,  -- Keep false to always show dashboard on startup
+        autoread = false,
         autowrite = true,
         directory = vim.fn.stdpath 'data' .. '/sessions',
         file = 'Session.vim',

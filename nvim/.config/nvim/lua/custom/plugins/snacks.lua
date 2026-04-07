@@ -21,7 +21,7 @@ return {
   },
   opts = {
     bigfile = { enabled = true },
-    picker = { enabled = false },  -- Disabled due to dimension validation issues - use Telescope instead
+    picker = { enabled = false },
     image = {
       enabled = true,
       doc = {
@@ -30,40 +30,19 @@ return {
         max_width = 80,
         max_height = 40,
       },
-      resolve = function(path, src)
-        -- First try obsidian API resolution
-        local ok, obsidian_api = pcall(require, "obsidian")
-        if ok and obsidian_api.api and obsidian_api.api.path_is_note(path) then
-          local resolved = obsidian_api.api.resolve_image_path(src)
-          if resolved and vim.fn.filereadable(resolved) == 1 then
-            return resolved
-          end
-        end
-
-        -- Fallback: resolve relative to vault root
-        local vault_root = vim.fn.expand('~/Documents/obsidian/notes')
-        local fallback_path = vault_root .. '/' .. src
-        if vim.fn.filereadable(fallback_path) == 1 then
-          return fallback_path
-        end
-
-        -- Return original if nothing works
-        return src
-      end,
     },
     dashboard = {
       preset = {
         pick = nil,
         ---@type snacks.dashboard.Item[]
         keys = {
-          { icon = " ", key = "s", desc = "Search Files", action = ":lua Snacks.dashboard.pick('files')" },
-          { icon = " ", key = "n", desc = "New File", action = ":ene | startinsert" },
-          { icon = " ", key = "g", desc = "Find Text", action = ":lua Snacks.dashboard.pick('live_grep')" },
-          { icon = " ", key = "r", desc = "Recent Files", action = ":lua Snacks.dashboard.pick('oldfiles')" },
-          { icon = " ", key = "c", desc = "Config", action = ":lua Snacks.dashboard.pick('files', {cwd = vim.fn.stdpath('config')})" },
-          -- { icon = " ", key = "e", desc = "Restore Session", section = "session" },
+          { icon = " ", key = "s", desc = "Search Files", action = ":lua Snacks.dashboard.pick('files')" },
+          { icon = " ", key = "n", desc = "New File", action = ":ene | startinsert" },
+          { icon = " ", key = "g", desc = "Find Text", action = ":lua Snacks.dashboard.pick('live_grep')" },
+          { icon = " ", key = "r", desc = "Recent Files", action = ":lua Snacks.dashboard.pick('oldfiles')" },
+          { icon = " ", key = "c", desc = "Config", action = ":lua Snacks.dashboard.pick('files', {cwd = vim.fn.stdpath('config')})" },
           { icon = "󰒲 ", key = "l", desc = "Lazy", action = ":Lazy", enabled = package.loaded.lazy ~= nil },
-          { icon = " ", key = "q", desc = "Quit", action = ":qa" },
+          { icon = " ", key = "q", desc = "Quit", action = ":qa" },
         },
         header = [[
           .o oOOOOOOOo                                            OOOo
@@ -85,14 +64,14 @@ return {
           .                  .     OP"          : o     .
                                     :
                                     .
-                                                                             
-               ████ ██████           █████      ██                     
-              ███████████             █████                             
-              █████████ ███████████████████ ███   ███████████   
-             █████████  ███    █████████████ █████ ██████████████   
-            █████████ ██████████ █████████ █████ █████ ████ █████   
-          ███████████ ███    ███ █████████ █████ █████ ████ █████  
-         ██████  █████████████████████ ████ █████ █████ ████ ██████ 
+
+               ████ ██████           █████      ██
+              ███████████             █████
+              █████████ ███████████████████ ███   ███████████
+             █████████  ███    █████████████ █████ ██████████████
+            █████████ ██████████ █████████ █████ █████ ████ █████
+          ███████████ ███    ███ █████████ █████ █████ ████ █████
+         ██████  █████████████████████ ████ █████ █████ ████ ██████
       ]],
       },
       sections = {
@@ -102,7 +81,7 @@ return {
           indent = 1,
           padding = 1,
         },
-        { section = 'recent_files', icon = ' ', title = 'Recent Files', indent = 3, padding = 2 },
+        { section = 'recent_files', icon = ' ', title = 'Recent Files', indent = 3, padding = 2 },
         { section = "startup" },
       },
     },

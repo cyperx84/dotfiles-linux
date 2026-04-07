@@ -5,11 +5,7 @@ return {
     priority = 1000,
     opts = {},
     config = function()
-      -- Colorscheme is set by omarchy-theme-hotreload.lua
-      -- Fallback if omarchy theme is not available
-      if vim.fn.filereadable(vim.fn.expand('~/.config/omarchy/current/theme/neovim.lua')) ~= 1 then
-        vim.cmd.colorscheme 'tokyonight'
-      end
+      vim.cmd.colorscheme 'unokai'
 
       -- Color palette
       local colors = {

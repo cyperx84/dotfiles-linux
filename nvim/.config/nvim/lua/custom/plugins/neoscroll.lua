@@ -3,20 +3,17 @@ return {
   event = 'VeryLazy',
   config = function()
     require('neoscroll').setup {
-      mappings = {}, -- Disable default mappings, we'll define our own
+      mappings = {},
       hide_cursor = true,
       stop_eof = true,
       respect_scrolloff = true,
-      cursor_scrolls_alone = true, -- Allow cursor to move even when view can't scroll
-      easing_function = 'sine', -- sine, cubic, quadratic, circular
+      cursor_scrolls_alone = true,
+      easing_function = 'sine',
       pre_hook = nil,
       post_hook = function(info)
-        -- Smart center: only zz when in the middle of the buffer
-        -- Skip centering at edges OR on short files that fit on screen
         if info == 'up' or info == 'down' then
           local at_top = vim.fn.line 'w0' == 1
           local at_bottom = vim.fn.line 'w$' >= vim.fn.line '$'
-          -- Only center if we can scroll both ways (truly in the middle)
           if not at_top and not at_bottom then
             vim.cmd 'normal! zz'
           end
@@ -26,7 +23,6 @@ return {
 
     local neoscroll = require 'neoscroll'
 
-    -- Custom keymaps - post_hook handles smart centering
     local keymap = {
       ['<C-u>'] = function()
         neoscroll.ctrl_u { duration = 100, info = 'up' }

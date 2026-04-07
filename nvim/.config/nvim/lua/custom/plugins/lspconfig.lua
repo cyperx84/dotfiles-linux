@@ -11,7 +11,6 @@ return {
   {
     'neovim/nvim-lspconfig',
     dependencies = {
-      -- NOTE: `opts = {}` is the same as calling `require('mason').setup({})`
       { 'williamboman/mason.nvim', opts = {} },
       'williamboman/mason-lspconfig.nvim',
       'WhoIsSethDaniel/mason-tool-installer.nvim',
@@ -59,11 +58,9 @@ return {
               buffer = event.buf,
               group = highlight_augroup,
               callback = function()
-                -- Safety check: only clear references if buffer is valid and not a special buffer
                 local buftype = vim.bo[event.buf].buftype
                 local filetype = vim.bo[event.buf].filetype
 
-                -- Skip special buffers (dashboard, codecompanion, terminals, etc.)
                 if filetype == 'snacks_dashboard' or
                    filetype == 'codecompanion' or
                    filetype == 'codecompanion-chat' or
@@ -73,7 +70,6 @@ return {
 
                 local ok = pcall(vim.lsp.buf.clear_references)
                 if not ok then
-                  -- If clearing fails, silently ignore (buffer may be in transition)
                   return
                 end
               end,
@@ -163,16 +159,11 @@ return {
         rust_analyzer = {},
 
         lua_ls = {
-          -- cmd = { ... },
-          -- filetypes = { ... },
-          -- capabilities = {},
           settings = {
             Lua = {
               completion = {
                 callSnippet = 'Replace',
               },
-              -- You can toggle below to ignore Lua_LS's noisy `missing-fields` warnings
-              -- diagnostics = { disable = { 'missing-fields' } },
             },
           },
         },
@@ -185,7 +176,7 @@ return {
       require('mason-tool-installer').setup { ensure_installed = ensure_installed }
 
       require('mason-lspconfig').setup {
-        ensure_installed = {}, -- explicitly set to an empty table (Kickstart populates installs via mason-tool-installer)
+        ensure_installed = {},
         automatic_installation = false,
         handlers = {
           function(server_name)

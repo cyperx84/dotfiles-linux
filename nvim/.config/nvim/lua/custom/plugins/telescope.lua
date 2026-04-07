@@ -2,7 +2,7 @@ return {
   { -- Fuzzy Finder (files, lsp, etc)
     'nvim-telescope/telescope.nvim',
     event = 'VimEnter',
-    branch = '0.1.x',
+    branch = 'master',
     dependencies = {
       'nvim-lua/plenary.nvim',
       { -- native fzf sorter
@@ -22,22 +22,18 @@ return {
 
       telescope.setup {
         defaults = {
-          -- follow symlinks in both file and grep pickers
-          -- NOTE: These are regex patterns, not literal strings! Escape dots with \\
           file_ignore_patterns = { '\\.git', 'node_modules', '\\.cache', '\\.obsidian', '\\.smart%-connections' },
-          -- Centered float layout with larger preview
           layout_strategy = 'horizontal',
           layout_config = {
             horizontal = {
               prompt_position = 'top',
-              width = 0.8,         -- 80% of screen width (matches Oil.nvim)
-              height = 0.8,        -- 80% of screen height (matches Oil.nvim)
-              preview_width = 0.6,  -- Preview takes 60% of the window
-              preview_cutoff = 1,   -- Always show preview
+              width = 0.8,
+              height = 0.8,
+              preview_width = 0.6,
+              preview_cutoff = 1,
             },
           },
 
-          -- Border styling
           borderchars = {
             prompt  = { "─", "│", "─", "│", "╭", "╮", "╯", "╰" },
             results = { "─", "│", "─", "│", "╭", "╮", "╯", "╰" },
@@ -59,7 +55,6 @@ return {
           },
         },
         pickers = {
-          -- make `:Telescope find_files` chase symlinks too
           find_files = {
             follow = true,
             hidden = true,
@@ -70,10 +65,8 @@ return {
         },
       }
 
-      -- load extensions if available
       pcall(telescope.load_extension, 'fzf')
       pcall(telescope.load_extension, 'ui-select')
-      pcall(telescope.load_extension, 'obsidian')
       pcall(telescope.load_extension, 'git_worktree')
 
       -- keymaps
@@ -88,7 +81,6 @@ return {
       vim.keymap.set('n', '<leader>s.', builtin.oldfiles, { desc = '[S]earch Recent Files ("." for repeat)' })
       vim.keymap.set('n', '<leader><leader>', builtin.buffers, { desc = '[ ] Find existing buffers' })
 
-      -- override default for current-buffer fuzzy-find
       vim.keymap.set('n', '<leader>/', function()
         builtin.current_buffer_fuzzy_find(themes.get_dropdown {
           winblend = 10,
@@ -96,7 +88,6 @@ return {
         })
       end, { desc = '[/] Fuzzily search in current buffer' })
 
-      -- live-grep in open files only
       vim.keymap.set('n', '<leader>s/', function()
         builtin.live_grep {
           grep_open_files = true,
@@ -104,7 +95,6 @@ return {
         }
       end, { desc = '[S]earch [/] in Open Files' })
 
-      -- search Neovim config
       vim.keymap.set('n', '<leader>sn', function()
         builtin.find_files {
           cwd = vim.fn.resolve(vim.fn.stdpath 'config'),

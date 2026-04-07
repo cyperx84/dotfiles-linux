@@ -54,7 +54,6 @@ return {
       self.spinner_timer:start(0, 100, vim.schedule_wrap(function()
         if self.processing then
           self.spinner_index = (self.spinner_index % spinner_symbols_len) + 1
-          -- Force statusline refresh
           vim.cmd('redrawstatus')
         else
           self:stop_spinner()
@@ -125,7 +124,7 @@ return {
         component_separators = { left = '│', right = '│' },
         section_separators = { left = '', right = '' },
         refresh = {
-          statusline = 1000, -- Update every second for stable components
+          statusline = 1000,
           tabline = 1000,
           winbar = 1000,
         },
@@ -146,7 +145,6 @@ return {
               newfile = '[New]',
             }
           },
-          -- Add breadcrumb navigation if available
           {
             function()
               local navic_ok, navic = pcall(require, 'nvim-navic')
@@ -163,7 +161,6 @@ return {
           }
         },
         lualine_x = {
-          -- LSP status
           {
             function()
               local clients = vim.lsp.get_clients()
@@ -177,7 +174,7 @@ return {
           { 'encoding', separator = { left = '│' } },
           { 'fileformat', separator = { left = '│' } },
           { 'filetype', separator = { left = '│' } },
-          M, -- Add the spinner component here
+          M,
           {
             function()
               local noice_ok, noice = pcall(require, 'noice')
@@ -196,4 +193,3 @@ return {
     }
   end,
 }
-

@@ -20,4 +20,3 @@ return {
     end, { desc = "Create worktree" })
   end
 }
-

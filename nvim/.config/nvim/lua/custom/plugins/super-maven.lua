@@ -8,17 +8,17 @@ return {
         clear_suggestion = '<C-]>',
         accept_word = '<C-j>',
       },
-      ignore_filetypes = { cpp = true }, -- or { "cpp", }
+      ignore_filetypes = { cpp = true },
       color = {
         suggestion_color = '#fc6f03',
         cterm = 244,
       },
-      log_level = 'info', -- set to "off" to disable logging completely
-      disable_inline_completion = false, -- disables inline completion for use with cmp
-      disable_keymaps = false, -- disables built in keymaps for more manual control
+      log_level = 'info',
+      disable_inline_completion = false,
+      disable_keymaps = false,
       condition = function()
         return false
-      end, -- condition to check for stopping supermaven, `true` means to stop supermaven when the condition is true.
+      end,
     }
   end,
 }
