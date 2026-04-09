@@ -89,9 +89,9 @@ echo "-------------------------------------"
 echo
 echo "6. Neovim Plugin Configs"
 echo "-------------------------------------"
-[[ -f ~/.config/nvim/lua/plugins/ai-codecompanion.lua ]] && echo "✓ CodeCompanion plugin" || echo "✗ CodeCompanion missing"
-[[ -f ~/.config/nvim/lua/plugins/git-enhanced.lua ]] && echo "✓ Git plugins" || echo "✗ Git plugins missing"
-[[ -f ~/.config/nvim/lua/plugins/navigation-enhanced.lua ]] && echo "✓ Navigation plugins" || echo "✗ Navigation plugins missing"
+[[ -f ~/.config/nvim/lua/custom/plugins/claude.lua ]] && echo "✓ Claude/AI plugin" || echo "✗ Claude/AI plugin missing"
+[[ -f ~/.config/nvim/lua/custom/plugins/gitsigns.lua ]] && echo "✓ Git plugins" || echo "✗ Git plugins missing"
+[[ -f ~/.config/nvim/lua/custom/plugins/telescope.lua ]] && echo "✓ Navigation plugins" || echo "✗ Navigation plugins missing"
 
 # Check Hyprland bindings
 echo
